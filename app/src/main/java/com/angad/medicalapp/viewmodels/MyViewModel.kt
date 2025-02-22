@@ -11,6 +11,7 @@ import com.angad.medicalapp.models.GetAllProductsResponseItem
 import com.angad.medicalapp.models.GetSpecificProductResponse
 import com.angad.medicalapp.models.GetSpecificUserResponse
 import com.angad.medicalapp.models.LoginUserResponse
+import com.angad.medicalapp.prefdata.MyPreferences
 import com.angad.medicalapp.repo.Repo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -20,7 +21,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class MyViewModel @Inject constructor(private val repo: Repo) : ViewModel() {
+class MyViewModel @Inject constructor(private val repo: Repo, private val prefs: MyPreferences) : ViewModel() {
 
 //    Mutable state flow for create user
     private val _createUser = MutableStateFlow(CreateUserState())
@@ -76,6 +77,19 @@ class MyViewModel @Inject constructor(private val repo: Repo) : ViewModel() {
         }
     }
 
+//    For get userId from preferences
+    init {
+        viewModelScope.launch {
+            get()
+        }
+    }
+    suspend fun get(){
+        prefs.getUserId.collect{
+            Log.d("userId", "get0: $it")
+        }
+    }
+
+
 //    Function that login the user
     fun loginUser(email: String, password: String){
         viewModelScope.launch(Dispatchers.IO) {
@@ -91,6 +105,7 @@ class MyViewModel @Inject constructor(private val repo: Repo) : ViewModel() {
 
                     is Results.Success -> {
                         _loginUser.value = LoginUserState(data = it.data.body(), isLoading = false)
+                        prefs.saveUserID(it.data.body()!!.message)
                     }
                 }
             }
