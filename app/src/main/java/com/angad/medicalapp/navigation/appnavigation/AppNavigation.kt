@@ -20,7 +20,7 @@ import com.angad.medicalapp.viewmodels.MyViewModel
 fun AppNavigation(viewModel: MyViewModel = hiltViewModel()) {
 
     val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = Routes.SignUpScreenRoute) {
+    NavHost(navController = navController, startDestination = Routes.LoginScreenRoute) {
 
         composable<Routes.SignUpScreenRoute> {
             SignUpScreen( navController = navController)

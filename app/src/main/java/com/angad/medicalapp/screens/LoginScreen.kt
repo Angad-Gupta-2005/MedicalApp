@@ -13,6 +13,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -59,9 +60,39 @@ fun LoginScreen(
         state.value.data != null -> {
             val data = state.value.data!!
             if (data.status == 200){
-                Toast.makeText(context, "Login Successful", Toast.LENGTH_SHORT).show()
-                navController.navigate(Routes.HomeScreenRoute)
-                state.value.data = null
+
+                LaunchedEffect(Unit) {
+                    viewModel.getSpecificUser(userId = data.message)
+                }
+
+                val approvedState = viewModel.getSpecificUser.collectAsState()
+                when{
+                    approvedState.value.isLoading -> {
+                        Box(
+                            modifier = Modifier.fillMaxSize(),
+                            contentAlignment = Alignment.Center
+                        ){
+                            CircularProgressIndicator()
+                        }
+                    }
+
+                    approvedState.value.error != null -> {
+                        Toast.makeText(context, state.value.error, Toast.LENGTH_SHORT).show()
+                    }
+
+                    approvedState.value.data != null -> {
+                        val userData = approvedState.value.data!!
+                        if (userData.isApproved == 1){
+                            Toast.makeText(context, "Login Successful", Toast.LENGTH_SHORT).show()
+                            navController.navigate(Routes.HomeScreenRoute)
+                            state.value.data = null
+                        } else{
+                            Toast.makeText(context, "You are still not approved by admin, please wait", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+
+
             } else {
                 Toast.makeText(context, "Login Failed: ${data.message}", Toast.LENGTH_SHORT).show()
                 state.value.data = null
@@ -88,7 +119,7 @@ fun LoginScreen(
             singleLine = true
         )
         
-        Spacer(modifier = Modifier.height(15.dp))
+        Spacer(modifier = Modifier.height(8.dp))
 
         OutlinedTextField(
             value = password.value, 

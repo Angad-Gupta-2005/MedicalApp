@@ -10,7 +10,6 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -59,7 +58,7 @@ fun WaitingScreen(
 
         state.value.data != null && !hasNavigated.value  -> {
             val data = state.value.data!!
-            Toast.makeText(context, "User fetch successfully", Toast.LENGTH_SHORT).show()
+           // Toast.makeText(context, "User fetch successfully", Toast.LENGTH_SHORT).show()
             Log.d("Approved", "WaitingScreen0: ${data.isApproved}")
             //state.value.data = null
 
@@ -74,7 +73,7 @@ fun WaitingScreen(
                         verticalArrangement = Arrangement.Center,
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        hasNavigated.value = true
+
                         Text(text = "Please wait, until you approved by the admin")
                     }
                 }
