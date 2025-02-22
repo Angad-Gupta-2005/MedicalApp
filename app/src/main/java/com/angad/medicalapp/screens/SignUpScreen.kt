@@ -12,6 +12,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -68,10 +69,19 @@ fun SignUpScreen(viewModel: MyViewModel = hiltViewModel(), navController: NavCon
 
         state.value.error != null -> {
             Toast.makeText(context, state.value.error, Toast.LENGTH_SHORT).show()
+//            Text(text = state.value.error!!)
         }
 
         state.value.data != null -> {
-            Toast.makeText(context, "SignUp Successful", Toast.LENGTH_SHORT).show()
+            val data = state.value.data!!
+            if (data.status == 200){
+                Toast.makeText(context, "User created successfully", Toast.LENGTH_SHORT).show()
+                navController.navigate(Routes.WaitingScreenRoute(data.message))
+                state.value.data = null
+            } else{
+                Toast.makeText(context, "User creation failed: ${data.message}", Toast.LENGTH_SHORT).show()
+                state.value.data = null
+            }
         }
     }
 
@@ -141,9 +151,9 @@ fun SignUpScreen(viewModel: MyViewModel = hiltViewModel(), navController: NavCon
 
         Button(
             onClick = {
-                if ( userName.value.isNotEmpty() || email.value.isNotEmpty() ||
-                    password.value.isNotEmpty() || address.value.isNotEmpty() ||
-                    phoneNumber.value.isNotEmpty() || pinCode.value.isNotEmpty()
+                if ( userName.value.isNotEmpty() && email.value.isNotEmpty() &&
+                    password.value.isNotEmpty() && address.value.isNotEmpty() &&
+                    phoneNumber.value.isNotEmpty() && pinCode.value.isNotEmpty()
                 ) {
                     viewModel.createUser(
                         name = userName.value,
@@ -153,9 +163,6 @@ fun SignUpScreen(viewModel: MyViewModel = hiltViewModel(), navController: NavCon
                         phoneNumber = phoneNumber.value,
                         pinCode = pinCode.value
                     )
-                //    Goto the waiting screen
-                    navController.navigate(Routes.WaitingScreenRoute)
-
                 } else{
                     Toast.makeText(context, "Please enter all details", Toast.LENGTH_SHORT).show()
                 }

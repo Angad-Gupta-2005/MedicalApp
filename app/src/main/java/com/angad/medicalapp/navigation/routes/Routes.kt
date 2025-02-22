@@ -8,5 +8,20 @@ sealed class Routes {
     object SignUpScreenRoute
 
     @Serializable
-    object WaitingScreenRoute
+    data class WaitingScreenRoute(
+        val userId: String
+    )
+
+    @Serializable
+    object LoginScreenRoute
+
+    @Serializable
+    object HomeScreenRoute
+
+    @Serializable
+    object GetAllProductRoute
+
+//    For AddOrderScreen
+    @Serializable
+    data class AddOrderRoute( val productId: String)
 }
