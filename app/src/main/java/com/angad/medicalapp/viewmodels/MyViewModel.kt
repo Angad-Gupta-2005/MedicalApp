@@ -7,7 +7,6 @@ import com.angad.medicalapp.common.Results
 import com.angad.medicalapp.models.AddOrderResponse
 import com.angad.medicalapp.models.CreateUserResponse
 import com.angad.medicalapp.models.GetAllProductsResponse
-import com.angad.medicalapp.models.GetAllProductsResponseItem
 import com.angad.medicalapp.models.GetSpecificProductResponse
 import com.angad.medicalapp.models.GetSpecificUserResponse
 import com.angad.medicalapp.models.LoginUserResponse
@@ -78,14 +77,13 @@ class MyViewModel @Inject constructor(private val repo: Repo, private val prefs:
     }
 
 //    For get userId from preferences
-    init {
-        viewModelScope.launch {
-            get()
-        }
-    }
-    suspend fun get(){
+    private val _userIdByPref = MutableStateFlow<String?>(null)
+    val userIdByPref = _userIdByPref.asStateFlow()
+
+    suspend fun getUserIdByPref(){
         prefs.getUserId.collect{
             Log.d("userId", "get0: $it")
+            _userIdByPref.value = it
         }
     }
 
@@ -105,6 +103,8 @@ class MyViewModel @Inject constructor(private val repo: Repo, private val prefs:
 
                     is Results.Success -> {
                         _loginUser.value = LoginUserState(data = it.data.body(), isLoading = false)
+
+                    //    For saving the userId into the preferences
                         prefs.saveUserID(it.data.body()!!.message)
                     }
                 }

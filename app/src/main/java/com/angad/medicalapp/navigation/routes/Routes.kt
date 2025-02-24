@@ -24,4 +24,17 @@ sealed class Routes {
 //    For AddOrderScreen
     @Serializable
     data class AddOrderRoute( val productId: String)
+
+//    For bottom navigation
+    @Serializable
+    object BottomNavRoute
+
+//    For OrderHistoryScreen
+    @Serializable
+    object OrderHistoryRoute
+
+//    For ProfileScreen
+    @Serializable
+    object ProfileRoute
+
 }
