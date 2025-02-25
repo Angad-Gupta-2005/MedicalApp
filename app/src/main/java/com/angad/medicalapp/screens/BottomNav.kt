@@ -54,7 +54,10 @@ fun BottomNav(navController: NavController) {
                             selectedIndex = index
                         },
                         icon = {
-                            Icon(imageVector = bottomNavItem.icon, contentDescription = null)
+                            Icon(
+                                imageVector = if (selectedIndex == index) bottomNavItem.icon else bottomNavItem.unselectedIcon,
+                                contentDescription = bottomNavItem.title
+                            )
                         },
                         label = {
                             Text(text = bottomNavItem.title)

@@ -115,7 +115,9 @@ class MyViewModel @Inject constructor(private val repo: Repo, private val prefs:
 
 //    Function that fetch specific user details
     fun getSpecificUser(userId: String){
+    Log.d("TAG", "getSpecificUser: Angad")
         viewModelScope.launch(Dispatchers.IO) {
+            Log.d("TAG", "getSpecificUser: Angad2")
                 repo.getSpecificUser(userId = userId).collect{
                     when(it){
                         is Results.Loading -> {
@@ -268,5 +270,5 @@ data class GetSpecificProductState(
 data class AddOrderDetailsState(
     val isLoading: Boolean = false,
     val error: String? = null,
-    val data: AddOrderResponse? = null
+    var data: AddOrderResponse? = null
 )
