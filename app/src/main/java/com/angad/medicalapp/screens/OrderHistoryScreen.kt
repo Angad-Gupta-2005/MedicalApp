@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.angad.medicalapp.models.OrderHistoryResponseItem
+import com.angad.medicalapp.navigation.routes.Routes
 import com.angad.medicalapp.viewmodels.MyViewModel
 
 @Composable
@@ -79,9 +80,9 @@ fun ShowOrderCard(res: OrderHistoryResponseItem, navController: NavController) {
     Card(
         modifier = Modifier
             .padding(vertical = 8.dp)
-//            .clickable {
-//                navController.navigate(Routes.AddOrderRoute(productId = res.products_id))
-//            }
+            .clickable {
+                navController.navigate(Routes.SpecificOrderRoute(res.order_id))
+            }
             .fillMaxSize()
             .shadow(
                 elevation = 8.dp,

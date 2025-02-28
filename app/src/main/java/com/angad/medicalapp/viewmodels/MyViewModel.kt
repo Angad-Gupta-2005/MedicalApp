@@ -11,6 +11,7 @@ import com.angad.medicalapp.models.GetSpecificProductResponse
 import com.angad.medicalapp.models.GetSpecificUserResponse
 import com.angad.medicalapp.models.LoginUserResponse
 import com.angad.medicalapp.models.OrderHistoryResponse
+import com.angad.medicalapp.models.SpecificOrderResponse
 import com.angad.medicalapp.prefdata.MyPreferences
 import com.angad.medicalapp.repo.Repo
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -54,6 +55,10 @@ class MyViewModel @Inject constructor(private val repo: Repo, private val prefs:
 //    Mutable state for getOrderHistory
     private val _getOrderHistory = MutableStateFlow(OrderHistoryState())
     val getOrderHistory = _getOrderHistory.asStateFlow()
+
+//    Mutable state for getSpecificOrder
+    private val _getSpecificOrder = MutableStateFlow(SpecificOrderState())
+    val getSpecificOrder = _getSpecificOrder.asStateFlow()
 
 
     //    Function that create the user
@@ -255,6 +260,28 @@ class MyViewModel @Inject constructor(private val repo: Repo, private val prefs:
         }
     }
 
+//    Function that fetch specific order details
+    fun getSpecificOrder(orderId: String){
+        viewModelScope.launch(Dispatchers.IO) {
+            repo.getSpecificOrder(orderId).collect{
+                when(it){
+                    is Results.Loading -> {
+                        _getSpecificOrder.value = SpecificOrderState(isLoading = true)
+                    }
+
+                    is Results.Error -> {
+                        _getSpecificOrder.value = SpecificOrderState(error = it.message, isLoading = false)
+                    }
+
+                    is Results.Success -> {
+                        _getSpecificOrder.value = SpecificOrderState(data = it.data.body(), isLoading = false)
+                    }
+                }
+            }
+        }
+    }
+
+
 }
 
 //  Data class that hold the state of create user
@@ -306,4 +333,11 @@ data class OrderHistoryState(
     val isLoading: Boolean = false,
     val error: String? = null,
     var data: OrderHistoryResponse? = null
+)
+
+//    Specific order response
+data class SpecificOrderState(
+    val isLoading: Boolean = false,
+    val error: String? = null,
+    var data: SpecificOrderResponse? = null
 )

@@ -37,4 +37,9 @@ sealed class Routes {
     @Serializable
     object ProfileRoute
 
+//    For specific order details
+    @Serializable
+    data class SpecificOrderRoute(val orderId: String)
+
+
 }

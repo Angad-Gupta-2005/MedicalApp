@@ -19,6 +19,7 @@ import com.angad.medicalapp.screens.LoginScreen
 import com.angad.medicalapp.screens.OrderHistoryScreen
 import com.angad.medicalapp.screens.ProfileScreen
 import com.angad.medicalapp.screens.SignUpScreen
+import com.angad.medicalapp.screens.SpecificOrderScreen
 import com.angad.medicalapp.screens.WaitingScreen
 import com.angad.medicalapp.viewmodels.MyViewModel
 import kotlinx.coroutines.Dispatchers
@@ -99,6 +100,13 @@ fun AppNavigation(viewModel: MyViewModel = hiltViewModel()) {
         composable<Routes.ProfileRoute> {
             ProfileScreen()
         }
+
+    //   For specific order screen
+        composable<Routes.SpecificOrderRoute> {
+            val orderId = it.arguments?.getString("orderId")?: ""
+            SpecificOrderScreen(orderId = orderId, viewModel = viewModel)
+        }
+
 
     }
 
