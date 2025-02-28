@@ -10,6 +10,7 @@ import com.angad.medicalapp.models.GetAllProductsResponse
 import com.angad.medicalapp.models.GetSpecificProductResponse
 import com.angad.medicalapp.models.GetSpecificUserResponse
 import com.angad.medicalapp.models.LoginUserResponse
+import com.angad.medicalapp.models.OrderHistoryResponse
 import com.angad.medicalapp.prefdata.MyPreferences
 import com.angad.medicalapp.repo.Repo
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -46,6 +47,14 @@ class MyViewModel @Inject constructor(private val repo: Repo, private val prefs:
     private val _getSpecificProduct = MutableStateFlow(GetSpecificProductState())
     val getSpecificProduct = _getSpecificProduct.asStateFlow()
 
+//    Mutable state for get userId from preferences
+    private val _userIdByPref = MutableStateFlow<String?>(null)
+    val userIdByPref = _userIdByPref.asStateFlow()
+
+//    Mutable state for getOrderHistory
+    private val _getOrderHistory = MutableStateFlow(OrderHistoryState())
+    val getOrderHistory = _getOrderHistory.asStateFlow()
+
 
     //    Function that create the user
     fun createUser(
@@ -76,10 +85,8 @@ class MyViewModel @Inject constructor(private val repo: Repo, private val prefs:
         }
     }
 
-//    For get userId from preferences
-    private val _userIdByPref = MutableStateFlow<String?>(null)
-    val userIdByPref = _userIdByPref.asStateFlow()
 
+//    Function that fetch userId from the preference
     suspend fun getUserIdByPref(){
         prefs.getUserId.collect{
             Log.d("userId", "get0: $it")
@@ -227,6 +234,27 @@ class MyViewModel @Inject constructor(private val repo: Repo, private val prefs:
     }
 
 
+//    Function that fetch order history
+    fun getOrderHistory(userId: String){
+        viewModelScope.launch(Dispatchers.IO) {
+            repo.getOrderHistory(userId).collect{
+                when(it){
+                    is Results.Loading -> {
+                        _getOrderHistory.value = OrderHistoryState(isLoading = true)
+                    }
+
+                    is Results.Error -> {
+                        _getOrderHistory.value = OrderHistoryState(error = it.message, isLoading = false)
+                    }
+
+                    is Results.Success -> {
+                        _getOrderHistory.value = OrderHistoryState(data = it.data.body(), isLoading = false)
+                    }
+                }
+            }
+        }
+    }
+
 }
 
 //  Data class that hold the state of create user
@@ -271,4 +299,11 @@ data class AddOrderDetailsState(
     val isLoading: Boolean = false,
     val error: String? = null,
     var data: AddOrderResponse? = null
+)
+
+//    Order history state
+data class OrderHistoryState(
+    val isLoading: Boolean = false,
+    val error: String? = null,
+    var data: OrderHistoryResponse? = null
 )

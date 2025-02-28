@@ -6,6 +6,7 @@ import com.angad.medicalapp.models.GetAllProductsResponse
 import com.angad.medicalapp.models.GetSpecificProductResponse
 import com.angad.medicalapp.models.GetSpecificUserResponse
 import com.angad.medicalapp.models.LoginUserResponse
+import com.angad.medicalapp.models.OrderHistoryResponse
 import retrofit2.Response
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
@@ -72,6 +73,14 @@ interface ApiService {
         @Field("product_price") productPrice: Int,
         @Field("category") category: String,
     ): Response<AddOrderResponse>
+
+
+//    Function that fetch user's all order
+    @FormUrlEncoded
+    @POST("getUserOrder")
+    suspend fun getOrderHistory(
+        @Field("user_id") userId: String
+    ): Response<OrderHistoryResponse>
 
 
 }

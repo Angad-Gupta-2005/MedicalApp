@@ -87,12 +87,12 @@ fun AppNavigation(viewModel: MyViewModel = hiltViewModel()) {
 
 //    For bottom navigation
         composable<Routes.BottomNavRoute> {
-            BottomNav(navController = navController)
+            BottomNav(userId = userId.value!!, navController = navController)
         }
 
     //    For order history
         composable<Routes.OrderHistoryRoute> {
-            OrderHistoryScreen()
+            OrderHistoryScreen(userId = userId.value!!, navController = navController)
         }
 
     //    For Profile screen

@@ -8,6 +8,7 @@ import com.angad.medicalapp.models.GetAllProductsResponse
 import com.angad.medicalapp.models.GetSpecificProductResponse
 import com.angad.medicalapp.models.GetSpecificUserResponse
 import com.angad.medicalapp.models.LoginUserResponse
+import com.angad.medicalapp.models.OrderHistoryResponse
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import retrofit2.Response
@@ -154,4 +155,22 @@ class Repo @Inject constructor(private val apiBuilder: ApiBuilder) {
             emit(Results.Error(e.message.toString()))
         }
     }
+
+
+//    Function that fetch order history
+    suspend fun getOrderHistory(userId: String): Flow<Results<Response<OrderHistoryResponse>>> = flow{
+        emit(Results.Loading)
+        try {
+            val response = apiBuilder.api.getOrderHistory(userId)
+            if (response.isSuccessful){
+                emit(Results.Success(response))
+            } else {
+                emit(Results.Error(response.message()))
+            }
+        } catch (e: Exception){
+            emit(Results.Error(e.message.toString()))
+        }
+    }
+
+
 }

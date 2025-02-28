@@ -2,6 +2,7 @@ package com.angad.medicalapp.screens
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
@@ -23,13 +24,14 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.angad.medicalapp.models.BottomNavItem
 
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter", "RememberReturnType")
 @Composable
-fun BottomNav(navController: NavController) {
+fun BottomNav(userId: String, navController: NavController) {
 
     var selectedIndex by remember {
         mutableIntStateOf(0)
@@ -46,13 +48,16 @@ fun BottomNav(navController: NavController) {
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         bottomBar = {
-            NavigationBar {
+            NavigationBar(
+                modifier = Modifier.height(70.dp)
+            ) {
                 bottomItem.forEachIndexed { index, bottomNavItem ->
                     NavigationBarItem(
                         selected = selectedIndex == index,
                         onClick = {
                             selectedIndex = index
                         },
+                        modifier = Modifier.padding(top = 20.dp),
                         icon = {
                             Icon(
                                 imageVector = if (selectedIndex == index) bottomNavItem.icon else bottomNavItem.unselectedIcon,
@@ -67,13 +72,13 @@ fun BottomNav(navController: NavController) {
             }
         }
     ) { innerPadding ->
-         ContentScreen(modifier = Modifier.padding(innerPadding), navController = navController, selectedIndex)
+         ContentScreen(modifier = Modifier.padding(innerPadding), navController = navController, selectedIndex, userId)
     }
 
 }
 
 @Composable
-fun ContentScreen(modifier: Modifier, navController: NavController, selectedIndex: Int) {
+fun ContentScreen(modifier: Modifier, navController: NavController, selectedIndex: Int, userId: String) {
     when(selectedIndex){
 //        0 -> navController.navigate(Routes.HomeScreenRoute)
 //        1 -> navController.navigate(Routes.GetAllProductRoute)
@@ -82,7 +87,7 @@ fun ContentScreen(modifier: Modifier, navController: NavController, selectedInde
 
         0 -> HomeScreen()
         1 -> GetAllProductScreen(navController = navController)
-        2 -> OrderHistoryScreen()
+        2 -> OrderHistoryScreen(userId = userId, navController = navController)
         3 -> ProfileScreen()
     }
 }
