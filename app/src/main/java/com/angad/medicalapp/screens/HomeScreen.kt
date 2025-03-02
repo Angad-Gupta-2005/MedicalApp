@@ -16,12 +16,14 @@ import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -49,12 +51,16 @@ fun HomeScreen(navController: NavController) {
                     fontFamily = FontFamily.SansSerif,
                     fontSize = 30.sp
                 ) },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = Color(0xFF1976D2),
+                    titleContentColor = Color.White
+                ),
                 actions = {
                     IconButton(onClick = { /* Handle notification click */ }) {
                         Icon(
                             imageVector = Icons.Filled.Notifications,
                             contentDescription = "Notifications",
-                            tint = Color.Black,
+                            tint = Color.White,
                             modifier = Modifier.size(30.dp)
                         )
                     }
@@ -66,7 +72,7 @@ fun HomeScreen(navController: NavController) {
                         Icon(
                             imageVector = Icons.Filled.AccountCircle,
                             contentDescription = "Profile",
-                            tint = Color.Black,
+                            tint = Color.White,
                             modifier = Modifier.size(30.dp)
                         )
                     }
@@ -128,7 +134,9 @@ fun HomeScreen(navController: NavController) {
                         .weight(0.25f)
                         .padding(horizontal = 6.dp)
                 ) {
-                    Card {
+                    Card(
+                        colors = CardDefaults.cardColors(containerColor = Color(0xFF90CAF9))
+                    ) {
                         Image(
                             painter = painterResource(id = R.drawable.weight),
                             contentDescription = "Fitness",
@@ -152,7 +160,9 @@ fun HomeScreen(navController: NavController) {
                         .weight(0.25f)
                         .padding(horizontal = 6.dp)
                 ) {
-                    Card {
+                    Card(
+                        colors = CardDefaults.cardColors(containerColor = Color(0xFF90CAF9))
+                    ) {
                         Image(
                             painter = painterResource(id = R.drawable.personal_care),
                             contentDescription = "Personal care",
@@ -176,7 +186,9 @@ fun HomeScreen(navController: NavController) {
                         .weight(0.25f)
                         .padding(horizontal = 6.dp)
                 ) {
-                    Card {
+                    Card(
+                        colors = CardDefaults.cardColors(containerColor = Color(0xFF90CAF9))
+                    ) {
                         Image(
                             painter = painterResource(id = R.drawable.medicine),
                             contentDescription = "Familymedicine",
@@ -200,7 +212,9 @@ fun HomeScreen(navController: NavController) {
                         .weight(0.25f)
                         .padding(horizontal = 6.dp)
                 ) {
-                    Card {
+                    Card(
+                        colors = CardDefaults.cardColors(containerColor = Color(0xFF90CAF9))
+                    ) {
                         Image(
                             painter = painterResource(id = R.drawable.lifestyles),
                             contentDescription = "Lifestyle",
@@ -254,7 +268,9 @@ fun HomeScreen(navController: NavController) {
                         .weight(0.25f)
                         .padding(horizontal = 6.dp)
                 ) {
-                    Card {
+                    Card(
+                        colors = CardDefaults.cardColors(containerColor = Color(0xFF90CAF9))
+                    ) {
                         Image(
                             painter = painterResource(id = R.drawable.products),
                             contentDescription = "Paracetamol",
@@ -278,7 +294,9 @@ fun HomeScreen(navController: NavController) {
                         .weight(0.25f)
                         .padding(horizontal = 6.dp)
                 ) {
-                    Card {
+                    Card(
+                        colors = CardDefaults.cardColors(containerColor = Color(0xFF90CAF9))
+                    ) {
                         Image(
                             painter = painterResource(id = R.drawable.products),
                             contentDescription = "Amoxicillin",
@@ -302,7 +320,9 @@ fun HomeScreen(navController: NavController) {
                         .weight(0.25f)
                         .padding(horizontal = 6.dp)
                 ) {
-                    Card {
+                    Card(
+                        colors = CardDefaults.cardColors(containerColor = Color(0xFF90CAF9))
+                    ) {
                         Image(
                             painter = painterResource(id = R.drawable.products),
                             contentDescription = "Omeprazole",
@@ -334,7 +354,9 @@ fun HomeScreen(navController: NavController) {
                         .weight(0.25f)
                         .padding(horizontal = 6.dp)
                 ) {
-                    Card {
+                    Card(
+                        colors = CardDefaults.cardColors(containerColor = Color(0xFF64B5F6))
+                    ) {
                         Image(
                             painter = painterResource(id = R.drawable.products),
                             contentDescription = "Paracetamol",
@@ -358,7 +380,9 @@ fun HomeScreen(navController: NavController) {
                         .weight(0.25f)
                         .padding(horizontal = 6.dp)
                 ) {
-                    Card {
+                    Card(
+                        colors = CardDefaults.cardColors(containerColor = Color(0xFF64B5F6))
+                    ) {
                         Image(
                             painter = painterResource(id = R.drawable.products),
                             contentDescription = "Amoxicillin",
@@ -382,7 +406,9 @@ fun HomeScreen(navController: NavController) {
                         .weight(0.25f)
                         .padding(horizontal = 6.dp)
                 ) {
-                    Card {
+                    Card(
+                        colors = CardDefaults.cardColors(containerColor = Color(0xFF64B5F6))
+                    ) {
                         Image(
                             painter = painterResource(id = R.drawable.products),
                             contentDescription = "Omeprazole",

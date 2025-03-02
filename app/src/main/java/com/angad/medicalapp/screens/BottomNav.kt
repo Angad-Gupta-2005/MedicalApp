@@ -2,20 +2,18 @@ package com.angad.medicalapp.screens
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material.icons.outlined.DateRange
 import androidx.compose.material.icons.outlined.Home
-import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.outlined.ShoppingCart
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -24,6 +22,7 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.angad.medicalapp.models.BottomNavItem
@@ -48,21 +47,35 @@ fun BottomNav(userId: String, navController: NavController) {
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         bottomBar = {
-            NavigationBar{
+            NavigationBar(
+                containerColor = Color(0xFF1976D2),
+                contentColor = Color.White,
+            ){
                 bottomItem.forEachIndexed { index, bottomNavItem ->
                     NavigationBarItem(
                         selected = selectedIndex == index,
                         onClick = {
                             selectedIndex = index
                         },
+                        colors = NavigationBarItemDefaults.colors(
+                            selectedIconColor = Color.Cyan,
+                            selectedTextColor = Color.Cyan,
+                            unselectedIconColor = Color(0xFFBBDEFB),
+                            unselectedTextColor = Color.Gray,
+                            indicatorColor = Color.LightGray
+                        ),
                         icon = {
                             Icon(
                                 imageVector = if (selectedIndex == index) bottomNavItem.icon else bottomNavItem.unselectedIcon,
-                                contentDescription = bottomNavItem.title
+                                contentDescription = bottomNavItem.title,
+                                tint = Color.White
                             )
                         },
                         label = {
-                            Text(text = bottomNavItem.title)
+                            Text(
+                                text = bottomNavItem.title,
+                                color = Color.White
+                            )
                         }
                     )
                 }
