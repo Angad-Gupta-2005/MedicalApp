@@ -8,9 +8,12 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -19,8 +22,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.angad.medicalapp.navigation.routes.Routes
@@ -100,51 +107,71 @@ fun LoginScreen(
         }
     }
 
-//    For input 
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        
-        Text(text = "Login Screen")
-        
-        Spacer(modifier = Modifier.height(30.dp))
-        
-        OutlinedTextField(
-            value = email.value,
-            onValueChange = { email.value = it },
-            label = { Text(text = "Email") },
-            modifier = Modifier.padding(8.dp),
-            singleLine = true
-        )
-        
-        Spacer(modifier = Modifier.height(8.dp))
-
-        OutlinedTextField(
-            value = password.value, 
-            onValueChange = { password.value = it },
-            label = { Text(text = "Password") },
-            modifier = Modifier.padding(8.dp),
-            singleLine = true
-        )
-        
-        Spacer(modifier = Modifier.height(30.dp))
-        
-        Button(
-            onClick = { 
-                if (email.value.isNotEmpty() && password.value.isNotEmpty()){
-                    viewModel.loginUser(
-                        email = email.value,
-                        password = password.value
-                    )
-                }else{
-                    Toast.makeText(context, "Please enter all details", Toast.LENGTH_SHORT).show()
-                }
-            }
+//    For input
+    Scaffold { innerPadding ->
+        Column(
+            modifier = Modifier.fillMaxSize().padding(innerPadding),
+            verticalArrangement = Arrangement.Top,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(text = "Login")
+
+            Text(
+                text = "Login Screen",
+                fontSize = 30.sp,
+                fontWeight = FontWeight.Bold,
+                fontFamily = FontFamily.SansSerif,
+                modifier = Modifier.padding(vertical = 20.dp),
+                color = Color(0xFF1976D2)
+            )
+
+            Spacer(modifier = Modifier.height(30.dp))
+
+            OutlinedTextField(
+                value = email.value,
+                onValueChange = { email.value = it },
+                label = { Text(text = "Email") },
+                modifier = Modifier.padding(8.dp),
+                singleLine = true
+            )
+
+            Spacer(modifier = Modifier.height(4.dp))
+
+            OutlinedTextField(
+                value = password.value,
+                onValueChange = { password.value = it },
+                label = { Text(text = "Password") },
+                modifier = Modifier.padding(8.dp),
+                singleLine = true
+            )
+
+            Spacer(modifier = Modifier.height(30.dp))
+
+            Button(
+                onClick = {
+                    if (email.value.isNotEmpty() && password.value.isNotEmpty()){
+                        viewModel.loginUser(
+                            email = email.value,
+                            password = password.value
+                        )
+                    }else{
+                        Toast.makeText(context, "Please enter all details", Toast.LENGTH_SHORT).show()
+                    }
+                },
+                colors = ButtonColors(
+                    containerColor = Color(0xFF1976D2),
+                    contentColor = Color.White,
+                    disabledContainerColor = Color(0xFF1976D2),
+                    disabledContentColor = Color.White
+                ),
+                modifier = Modifier.width(250.dp)
+            ) {
+                Text(
+                    text = "Login",
+                    fontSize = 20.sp,
+                    modifier = Modifier.padding(vertical = 5.dp)
+                )
+            }
+
         }
-        
     }
 }
