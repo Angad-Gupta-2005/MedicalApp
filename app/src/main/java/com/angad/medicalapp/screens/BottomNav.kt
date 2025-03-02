@@ -42,22 +42,19 @@ fun BottomNav(userId: String, navController: NavController) {
         BottomNavItem("Home", Icons.Filled.Home, Icons.Outlined.Home),
         BottomNavItem("Product", Icons.Filled.ShoppingCart, Icons.Outlined.ShoppingCart),
         BottomNavItem("Order", Icons.Filled.DateRange, Icons.Outlined.DateRange),
-        BottomNavItem("Profile", Icons.Filled.Person, Icons.Outlined.Person)
+
     )
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         bottomBar = {
-            NavigationBar(
-                modifier = Modifier.height(70.dp)
-            ) {
+            NavigationBar{
                 bottomItem.forEachIndexed { index, bottomNavItem ->
                     NavigationBarItem(
                         selected = selectedIndex == index,
                         onClick = {
                             selectedIndex = index
                         },
-                        modifier = Modifier.padding(top = 20.dp),
                         icon = {
                             Icon(
                                 imageVector = if (selectedIndex == index) bottomNavItem.icon else bottomNavItem.unselectedIcon,
@@ -85,9 +82,9 @@ fun ContentScreen(modifier: Modifier, navController: NavController, selectedInde
 //        2 -> navController.navigate(Routes.OrderHistoryRoute)
 //        3 -> navController.navigate(Routes.ProfileRoute)
 
-        0 -> HomeScreen()
+        0 -> HomeScreen(navController = navController)
         1 -> GetAllProductScreen(navController = navController)
         2 -> OrderHistoryScreen(userId = userId, navController = navController)
-        3 -> ProfileScreen()
+
     }
 }

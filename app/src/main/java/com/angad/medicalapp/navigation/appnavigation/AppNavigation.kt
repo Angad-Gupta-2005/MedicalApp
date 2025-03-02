@@ -67,7 +67,7 @@ fun AppNavigation(viewModel: MyViewModel = hiltViewModel()) {
         }
 
         composable<Routes.HomeScreenRoute> {
-            HomeScreen()
+            HomeScreen(navController = navController)
         }
 
     //    For get allProduct
