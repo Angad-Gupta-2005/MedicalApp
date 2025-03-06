@@ -25,12 +25,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.angad.medicalapp.R
 import com.angad.medicalapp.navigation.routes.Routes
 import com.angad.medicalapp.viewmodels.MyViewModel
 
@@ -102,12 +104,23 @@ fun SignUpScreen(viewModel: MyViewModel = hiltViewModel(), navController: NavCon
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
+            Spacer(modifier = Modifier.height(30.dp))
+
             Text(
-                text = "SignUp Screen",
-                fontSize = 30.sp,
+                text = "Welcome to My Medi Hub",
+                fontSize = 26.sp,
                 fontWeight = FontWeight.Bold,
-                fontFamily = FontFamily.SansSerif,
-                modifier = Modifier.padding(vertical = 20.dp),
+                fontFamily = FontFamily(Font(R.font.timesbd)),
+                modifier = Modifier.padding(vertical = 10.dp),
+                color = Color(0xFF1976D2)
+            )
+
+            Text(
+                text = "SignUp",
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold,
+                fontFamily = FontFamily(Font(R.font.times)),
+                modifier = Modifier.padding(vertical = 10.dp),
                 color = Color(0xFF1976D2)
             )
 
@@ -118,8 +131,6 @@ fun SignUpScreen(viewModel: MyViewModel = hiltViewModel(), navController: NavCon
                 label = { Text(text = "Name") },
                 singleLine = true
             )
-//        For space
-            Spacer(modifier = Modifier.height(10.dp))
 
             OutlinedTextField(
                 value = email.value,
@@ -128,16 +139,12 @@ fun SignUpScreen(viewModel: MyViewModel = hiltViewModel(), navController: NavCon
                 singleLine = true
             )
 
-            Spacer(modifier = Modifier.height(10.dp))
-
             OutlinedTextField(
                 value = password.value,
                 onValueChange = { password.value = it },
                 label = { Text(text = "Password") },
                 singleLine = true
             )
-
-            Spacer(modifier = Modifier.height(10.dp))
 
             OutlinedTextField(
                 value = address.value,
@@ -146,16 +153,12 @@ fun SignUpScreen(viewModel: MyViewModel = hiltViewModel(), navController: NavCon
                 singleLine = true
             )
 
-            Spacer(modifier = Modifier.height(10.dp))
-
             OutlinedTextField(
                 value = phoneNumber.value,
                 onValueChange = { phoneNumber.value = it },
                 label = { Text(text = "Phone number") },
                 singleLine = true
             )
-
-            Spacer(modifier = Modifier.height(10.dp))
 
             OutlinedTextField(
                 value = pinCode.value,
@@ -195,7 +198,8 @@ fun SignUpScreen(viewModel: MyViewModel = hiltViewModel(), navController: NavCon
                 Text(
                     text = "Sign Up",
                     fontSize = 20.sp,
-                    modifier = Modifier.padding(vertical = 5.dp)
+                    fontFamily = FontFamily(Font(R.font.times)),
+                    modifier = Modifier.padding(vertical = 4.dp)
                 )
             }
 

@@ -4,6 +4,7 @@ import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -24,12 +25,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.angad.medicalapp.R
 import com.angad.medicalapp.navigation.routes.Routes
 import com.angad.medicalapp.viewmodels.MyViewModel
 
@@ -110,21 +113,34 @@ fun LoginScreen(
 //    For input
     Scaffold { innerPadding ->
         Column(
-            modifier = Modifier.fillMaxSize().padding(innerPadding),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding),
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
+            Spacer(modifier = Modifier.height(50.dp))
+
             Text(
-                text = "Login Screen",
-                fontSize = 30.sp,
+                text = "Welcome to My Medi Hub",
+                fontSize = 26.sp,
                 fontWeight = FontWeight.Bold,
-                fontFamily = FontFamily.SansSerif,
-                modifier = Modifier.padding(vertical = 20.dp),
+                fontFamily = FontFamily(Font(R.font.timesbd)),
+                modifier = Modifier.padding(vertical = 10.dp),
                 color = Color(0xFF1976D2)
             )
 
-            Spacer(modifier = Modifier.height(30.dp))
+            Text(
+                text = "Log In",
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold,
+                fontFamily = FontFamily(Font(R.font.times)),
+                modifier = Modifier.padding(vertical = 10.dp),
+                color = Color(0xFF1976D2)
+            )
+
+            Spacer(modifier = Modifier.height(20.dp))
 
             OutlinedTextField(
                 value = email.value,
@@ -134,7 +150,7 @@ fun LoginScreen(
                 singleLine = true
             )
 
-            Spacer(modifier = Modifier.height(4.dp))
+            //Spacer(modifier = Modifier.height(4.dp))
 
             OutlinedTextField(
                 value = password.value,
@@ -168,10 +184,27 @@ fun LoginScreen(
                 Text(
                     text = "Login",
                     fontSize = 20.sp,
+                    fontFamily = FontFamily(Font(R.font.times)),
                     modifier = Modifier.padding(vertical = 5.dp)
                 )
             }
 
+            Spacer(modifier = Modifier.height(15.dp))
+
+            Row(
+                modifier = Modifier.padding(vertical = 10.dp),
+                horizontalArrangement = Arrangement.Center
+            ) {
+                Text(
+                    text = "Haven't signed up? ",
+                    fontFamily = FontFamily(Font(R.font.times))
+                )
+                Text(
+                    text = "Sign Up",
+                    color = Color(0xFF1976D2),
+                    fontFamily = FontFamily(Font(R.font.times))
+                )
+            }
         }
     }
 }
