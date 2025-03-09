@@ -2,6 +2,7 @@ package com.angad.medicalapp.screens
 
 import android.widget.Toast
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -88,6 +89,7 @@ fun OrderHistoryScreen(userId: String, viewModel: MyViewModel = hiltViewModel(),
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
+                        .background(Color(0xFFE3F2FD))
                         .padding(innerPadding)
                 ) {
                     LazyColumn(
@@ -118,7 +120,9 @@ fun ShowOrderCard(res: OrderHistoryResponseItem, navController: NavController) {
                 spotColor = Color.Black,
                 shape = RoundedCornerShape(8.dp)
             ),
-        colors = CardDefaults.cardColors(),
+        colors = CardDefaults.cardColors(
+            containerColor = Color(0xFFFFFFFF) // White Card Color
+        ),
         shape = RoundedCornerShape(8.dp)
     ) {
         Row(
@@ -133,7 +137,7 @@ fun ShowOrderCard(res: OrderHistoryResponseItem, navController: NavController) {
                         .padding(8.dp)
                         .size(80.dp),
                     shape = RoundedCornerShape(8.dp),
-                    colors = CardDefaults.cardColors(containerColor = Color(0xFF90CAF9))
+                    colors = CardDefaults.cardColors(containerColor = Color(0xFFE3F2FD))
                 ) {
                     Image(
                         painter = painterResource(id = R.drawable.products),

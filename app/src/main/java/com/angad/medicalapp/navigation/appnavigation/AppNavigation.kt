@@ -47,7 +47,7 @@ fun AppNavigation(viewModel: MyViewModel = hiltViewModel()) {
     }
 
 
-    NavHost(navController = navController, startDestination = Routes.SignUpScreenRoute) {
+    NavHost(navController = navController, startDestination = startScreen) {
 
         composable<Routes.SignUpScreenRoute> {
             SignUpScreen( navController = navController)

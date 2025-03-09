@@ -2,6 +2,7 @@ package com.angad.medicalapp.screens
 
 import android.util.Log
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -82,7 +83,7 @@ fun HomeScreen(navController: NavController) {
     ) { innerPadding ->
 
         Column(
-            modifier = Modifier.padding(innerPadding)
+            modifier = Modifier.background(Color(0xFFE3F2FD)).padding(innerPadding)
         ) {
 
         //    Banner row
