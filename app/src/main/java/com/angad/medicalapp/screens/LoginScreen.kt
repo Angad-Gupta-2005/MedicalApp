@@ -95,7 +95,11 @@ fun LoginScreen(
                         val userData = approvedState.value.data!!
                         if (userData.isApproved == 1){
                             Toast.makeText(context, "Login Successful", Toast.LENGTH_SHORT).show()
-                            navController.navigate(Routes.HomeScreenRoute)
+                            navController.navigate(Routes.BottomNavRoute){
+                                popUpTo(0){
+                                    inclusive = true
+                                }
+                            }
                             state.value.data = null
                         } else{
                             Toast.makeText(context, "You are still not approved by admin, please wait", Toast.LENGTH_SHORT).show()

@@ -88,7 +88,7 @@ fun SignUpScreen(viewModel: MyViewModel = hiltViewModel(), navController: NavCon
             val data = state.value.data!!
             if (data.status == 200){
                 Toast.makeText(context, "User created successfully", Toast.LENGTH_SHORT).show()
-                navController.navigate(Routes.WaitingScreenRoute(data.message))
+                navController.navigate(Routes.WaitingScreenRoute(userId = data.message))
                 state.value.data = null
             } else{
                 Toast.makeText(context, "User creation failed: ${data.message}", Toast.LENGTH_SHORT).show()

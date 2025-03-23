@@ -84,6 +84,8 @@ class MyViewModel @Inject constructor(private val repo: Repo, private val prefs:
                     }
                     is Results.Success -> {
                         _createUser.value = CreateUserState(data = it.data.body(), isLoading = false)
+                        //    For saving the userId into the preferences
+                        prefs.saveUserID(it.data.body()!!.message)
                     }
                 }
             }
@@ -116,8 +118,8 @@ class MyViewModel @Inject constructor(private val repo: Repo, private val prefs:
                     is Results.Success -> {
                         _loginUser.value = LoginUserState(data = it.data.body(), isLoading = false)
 
-                    //    For saving the userId into the preferences
-                        prefs.saveUserID(it.data.body()!!.message)
+//                    //    For saving the userId into the preferences
+//                        prefs.saveUserID(it.data.body()!!.message)
                     }
                 }
             }

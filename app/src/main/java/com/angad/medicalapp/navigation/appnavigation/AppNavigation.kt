@@ -42,7 +42,7 @@ fun AppNavigation(viewModel: MyViewModel = hiltViewModel()) {
         if(userId.value.isNullOrEmpty()){
             Routes.SignUpScreenRoute
         } else {
-            Routes.BottomNavRoute
+            Routes.WaitingScreenRoute(userId = userId.value!!)
         }
     }
 
