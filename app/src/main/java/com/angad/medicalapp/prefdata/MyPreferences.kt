@@ -1,11 +1,11 @@
 package com.angad.medicalapp.prefdata
 
 import android.content.Context
+import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 
 //    Creating an instance of preferences
@@ -15,6 +15,7 @@ class MyPreferences(private val context: Context) {
 
     companion object{
         private val USER_ID_KEY = stringPreferencesKey("user_id")
+        private val IS_LOGGED_IN_KEY = booleanPreferencesKey("is_logged_in")
     }
 
 //    Function that save the userId in the preference datastore
@@ -24,13 +25,19 @@ class MyPreferences(private val context: Context) {
         }
     }
 
-//    Function that get the userId from the preference
-//    suspend fun getUser(): String?{
-//        val preferences = context.dataStore.data.first()
-//        return preferences[USER_ID_KEY]
-//    }
+//    Function that save the login status of the user into the preference datastore
+    suspend fun saveLoginStatus(isLoggedIn: Boolean){
+        context.dataStore.edit { pref->
+            pref[IS_LOGGED_IN_KEY] = isLoggedIn
+        }
+    }
 
-//    OR we can also use this to fetch userId from preferences
+//    Function that fetch the login status of the user from the preference datastore
+    val isLoggedIn: Flow<Boolean> = context.dataStore.data.map {
+        it[IS_LOGGED_IN_KEY] ?: false
+    }
+
+//     Function that use to fetch userId from preferences
     val getUserId: Flow<String?> = context.dataStore.data.map {
         it[USER_ID_KEY]
     }

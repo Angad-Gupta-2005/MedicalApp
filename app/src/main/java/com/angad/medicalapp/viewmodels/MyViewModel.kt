@@ -52,6 +52,11 @@ class MyViewModel @Inject constructor(private val repo: Repo, private val prefs:
     private val _userIdByPref = MutableStateFlow<String?>(null)
     val userIdByPref = _userIdByPref.asStateFlow()
 
+//    Mutable state for get user login status from the preferences
+    private val _getLoginStatusByPref = MutableStateFlow<Boolean>(false)
+    val getLoginStatusByPref = _getLoginStatusByPref.asStateFlow()
+
+
 //    Mutable state for getOrderHistory
     private val _getOrderHistory = MutableStateFlow(OrderHistoryState())
     val getOrderHistory = _getOrderHistory.asStateFlow()
@@ -85,7 +90,7 @@ class MyViewModel @Inject constructor(private val repo: Repo, private val prefs:
                     is Results.Success -> {
                         _createUser.value = CreateUserState(data = it.data.body(), isLoading = false)
                         //    For saving the userId into the preferences
-                        prefs.saveUserID(it.data.body()!!.message)
+                        prefs.saveUserID(userId = it.data.body()!!.message)
                     }
                 }
             }
@@ -101,6 +106,13 @@ class MyViewModel @Inject constructor(private val repo: Repo, private val prefs:
         }
     }
 
+//    Function that fetch the login status of the user from preferences
+    suspend fun getUserLoginStatus(){
+        prefs.isLoggedIn.collect{
+            Log.d("userId", "get1: $it")
+            _getLoginStatusByPref.value = it
+        }
+    }
 
 //    Function that login the user
     fun loginUser(email: String, password: String){
@@ -116,10 +128,16 @@ class MyViewModel @Inject constructor(private val repo: Repo, private val prefs:
                     }
 
                     is Results.Success -> {
-                        _loginUser.value = LoginUserState(data = it.data.body(), isLoading = false)
+                       val response = it.data.body()
+                        if (response != null && response.status == 200) {
+                            _loginUser.value = LoginUserState(data = response, isLoading = false)
 
-//                    //    For saving the userId into the preferences
-//                        prefs.saveUserID(it.data.body()!!.message)
+                            // Save login status only if login was successful
+                            prefs.saveUserID(response.message)
+                            prefs.saveLoginStatus(isLoggedIn = true)
+                        } else {
+                            _loginUser.value = LoginUserState(error = "Invalid Email or Password", isLoading = false)
+                        }
                     }
                 }
             }

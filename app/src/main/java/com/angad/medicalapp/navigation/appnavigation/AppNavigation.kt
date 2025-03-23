@@ -31,6 +31,14 @@ fun AppNavigation(viewModel: MyViewModel = hiltViewModel()) {
     val coroutineScope = rememberCoroutineScope()
     val userId = viewModel.userIdByPref.collectAsState()
     val navController = rememberNavController()
+    val isUserLoggedIn = viewModel.getLoginStatusByPref.collectAsState()
+
+
+    LaunchedEffect(key1 = Unit) {
+        coroutineScope.launch(Dispatchers.IO) {
+            viewModel.getUserLoginStatus()
+        }
+    }
 
     LaunchedEffect(key1 = Unit) {
         coroutineScope.launch(Dispatchers.IO) {
@@ -47,7 +55,7 @@ fun AppNavigation(viewModel: MyViewModel = hiltViewModel()) {
     }
 
 
-    NavHost(navController = navController, startDestination = startScreen) {
+    NavHost(navController = navController, startDestination = if (isUserLoggedIn.value) Routes.BottomNavRoute else startScreen ) {
 
         composable<Routes.SignUpScreenRoute> {
             SignUpScreen( navController = navController)
