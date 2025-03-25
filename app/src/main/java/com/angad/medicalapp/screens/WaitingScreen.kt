@@ -2,6 +2,7 @@ package com.angad.medicalapp.screens
 
 import android.util.Log
 import android.widget.Toast
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,7 +16,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
@@ -55,7 +58,7 @@ fun WaitingScreen(
         state.value.data != null -> {
             val data = state.value.data!!
             Log.d("Approved", "WaitingScreen0: ${data.isApproved}")
-            Toast.makeText(context, "Success", Toast.LENGTH_SHORT).show()
+            //Toast.makeText(context, "Success", Toast.LENGTH_SHORT).show()
 
             if (data.isApproved == 1 && !hasNavigated.value) {
                 hasNavigated.value = true // Set flag to true to prevent multiple navigation
@@ -69,12 +72,18 @@ fun WaitingScreen(
             } else if (data.isApproved == 0) {
                 Log.d("Approved", "WaitingScreen2: ${data.isApproved}")
                 Column(
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(Color(0xFFE3F2FD)),
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
 
-                    Text(text = "Please wait, until you approved by the admin")
+                    Text(
+                        text = "Please wait, until you approved by the admin",
+                        color = Color.Black,
+                        fontWeight = FontWeight.SemiBold
+                    )
                 }
             }
 

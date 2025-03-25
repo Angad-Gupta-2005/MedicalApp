@@ -1,5 +1,6 @@
 package com.angad.medicalapp.screens
 
+import android.util.Patterns
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -10,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
@@ -29,6 +31,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -49,6 +52,10 @@ fun SignUpScreen(viewModel: MyViewModel = hiltViewModel(), navController: NavCon
 
     val email = remember {
         mutableStateOf("")
+    }
+//    For validate the email field
+    val isEmailValid = remember(email.value) {
+        Patterns.EMAIL_ADDRESS.matcher(email.value).matches()
     }
 
     val password = remember {
@@ -140,14 +147,29 @@ fun SignUpScreen(viewModel: MyViewModel = hiltViewModel(), navController: NavCon
                 value = email.value,
                 onValueChange = { email.value = it },
                 label = { Text(text = "Email") },
-                singleLine = true
+                singleLine = true,
+                isError = email.value.isNotEmpty() && !isEmailValid, // Show error if email is invalid
+                supportingText = {
+                    if (email.value.isNotEmpty() && !isEmailValid) {
+                        Text(text = "Invalid email format", color = Color.Red)
+                    }
+                },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
             )
 
             OutlinedTextField(
                 value = password.value,
-                onValueChange = { password.value = it },
+                onValueChange = {
+                    if ( it.length <= 8 && it.all { char -> char.isDigit() }) {
+                        password.value = it
+                    }
+                },
                 label = { Text(text = "Password") },
-                singleLine = true
+                singleLine = true,
+                keyboardOptions = KeyboardOptions(
+                    autoCorrectEnabled = true,
+                    keyboardType = KeyboardType.Number
+                )
             )
 
             OutlinedTextField(
@@ -159,16 +181,32 @@ fun SignUpScreen(viewModel: MyViewModel = hiltViewModel(), navController: NavCon
 
             OutlinedTextField(
                 value = phoneNumber.value,
-                onValueChange = { phoneNumber.value = it },
+                onValueChange = {
+                    if ( it.length <= 10 && it.all { char -> char.isDigit() }) {
+                        phoneNumber.value = it
+                    }
+                },
                 label = { Text(text = "Phone number") },
-                singleLine = true
+                singleLine = true,
+                keyboardOptions = KeyboardOptions(
+                    autoCorrectEnabled = true,
+                    keyboardType = KeyboardType.Number
+                )
             )
 
             OutlinedTextField(
                 value = pinCode.value,
-                onValueChange = { pinCode.value = it },
+                onValueChange = {
+                    if ( it.length <= 6 && it.all { char -> char.isDigit() }) {
+                        pinCode.value = it
+                    }
+                },
                 label = { Text(text = "Pin code") },
-                singleLine = true
+                singleLine = true,
+                keyboardOptions = KeyboardOptions(
+                    autoCorrectEnabled = true,
+                    keyboardType = KeyboardType.Number
+                )
             )
 
             Spacer(modifier = Modifier.height(30.dp))

@@ -3,6 +3,7 @@ package com.angad.medicalapp.screens
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,6 +15,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.Card
@@ -39,6 +41,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -133,7 +136,7 @@ fun AddOrderScreen(
             LaunchedEffect(key1 = Unit) {
                 if (data != null) {
                     Log.d("TAG", "AddOrderScreen: Fetch Successfully")
-                    Toast.makeText(context, "Product Fetch Successfully1", Toast.LENGTH_SHORT).show()
+                  //  Toast.makeText(context, "Product Fetch Successfully1", Toast.LENGTH_SHORT).show()
                 }
             }
 
@@ -166,8 +169,10 @@ fun AddOrderScreen(
             ) { innerPadding ->
                 data?.let {
                     Column(
-                        modifier = Modifier.fillMaxWidth().padding(innerPadding),
-                        verticalArrangement = Arrangement.Center,
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(innerPadding)
+                            .background(Color(0xFFE3F2FD)),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         PlaceOrder(it, viewModel, productId, userId.value, navController)
@@ -194,8 +199,9 @@ fun PlaceOrder(data: GetSpecificProductResponse, viewModel: MyViewModel, product
     val context = LocalContext.current
     Card(
         modifier = Modifier
-            .padding(top = 10.dp, start = 8.dp, end = 8.dp, bottom = 10.dp)
+            .padding(10.dp)
             .fillMaxWidth(),
+        colors = CardDefaults.cardColors(Color(0xFFFFFFFF))
 
     ) {
         Row(
@@ -253,19 +259,35 @@ fun PlaceOrder(data: GetSpecificProductResponse, viewModel: MyViewModel, product
     //    For receiver phone number
     OutlinedTextField(
         value = phoneNumber.value,
-        onValueChange = { phoneNumber.value = it },
+        onValueChange = {
+            if (it.length <= 10 && it.all { char -> char.isDigit() }) {
+                phoneNumber.value = it
+            }
+        },
         label = { Text("Enter Phone Number") },
         modifier = Modifier.padding(horizontal = 4.dp),
-        singleLine = true
+        singleLine = true,
+        keyboardOptions = KeyboardOptions(
+            autoCorrectEnabled = true,
+            keyboardType = KeyboardType.Number
+        )
     )
 
     //    For quantity
     OutlinedTextField(
         value = quantity.value,
-        onValueChange = { quantity.value = it },
+        onValueChange = {
+            if (it.length <= 3 && it.all { char -> char.isDigit() }) {
+                quantity.value = it
+            }
+        },
         label = { Text("Enter Quantity") },
         modifier = Modifier.padding(horizontal = 4.dp),
-        singleLine = true
+        singleLine = true,
+        keyboardOptions = KeyboardOptions(
+            autoCorrectEnabled = true,
+            keyboardType = KeyboardType.Number
+        )
     )
 
     //    For message
@@ -303,7 +325,7 @@ fun PlaceOrder(data: GetSpecificProductResponse, viewModel: MyViewModel, product
                 phoneNumber.value = ""
                 quantity.value = ""
                 message.value = ""
-              //  navController.navigateUp()
+                navController.navigateUp()
             } else {
                 Toast.makeText(context, "Please enter all details", Toast.LENGTH_SHORT).show()
             }
@@ -316,6 +338,10 @@ fun PlaceOrder(data: GetSpecificProductResponse, viewModel: MyViewModel, product
             disabledContentColor = Color.White
         )
     ) {
-        Text(text = "Add Order")
+        Text(
+            text = "Add Order",
+            fontSize = 16.sp,
+            fontWeight = FontWeight.SemiBold
+        )
     }
 }

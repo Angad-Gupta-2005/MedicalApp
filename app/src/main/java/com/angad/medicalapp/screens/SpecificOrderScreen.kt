@@ -1,6 +1,7 @@
 package com.angad.medicalapp.screens
 
 import android.widget.Toast
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -65,6 +66,7 @@ fun SpecificOrderScreen(orderId: String, viewModel: MyViewModel = hiltViewModel(
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(innerPadding)
+                        .background(Color(0xFFE3F2FD))
                         .verticalScroll(rememberScrollState()),
                     horizontalAlignment = Alignment.Start
                 ) {
@@ -82,7 +84,7 @@ fun SpecificOrderScreen(orderId: String, viewModel: MyViewModel = hiltViewModel(
                         DetailRow(label = "Phone Number:", value = order.phone_number)
                         DetailRow(label = "Message:", value = order.message)
                         DetailRow(label = "User Name:", value = order.user_name)
-                        DetailRow(label = "Status:", value = order.isApproved.toString())
+                        DetailRow(label = "Status:", value = if (order.isApproved == 1) "Approved" else "Pending")
                     }
                 }
             }

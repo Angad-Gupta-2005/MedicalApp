@@ -1,7 +1,9 @@
 package com.angad.medicalapp.screens
 
+import android.util.Patterns
 import android.widget.Toast
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -11,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.CircularProgressIndicator
@@ -29,6 +32,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -47,6 +51,10 @@ fun LoginScreen(
 
     val email = remember {
         mutableStateOf("")
+    }
+//    For validate the email field
+    val isEmailValid = remember(email.value) {
+        Patterns.EMAIL_ADDRESS.matcher(email.value).matches()
     }
 
     val password = remember {
@@ -153,17 +161,32 @@ fun LoginScreen(
                 onValueChange = { email.value = it },
                 label = { Text(text = "Email") },
                 modifier = Modifier.padding(8.dp),
-                singleLine = true
+                singleLine = true,
+                isError = email.value.isNotEmpty() && !isEmailValid, // Show error if email is invalid
+                supportingText = {
+                    if (email.value.isNotEmpty() && !isEmailValid) {
+                        Text(text = "Invalid email format", color = Color.Red)
+                    }
+                },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
             )
 
             //Spacer(modifier = Modifier.height(4.dp))
 
             OutlinedTextField(
                 value = password.value,
-                onValueChange = { password.value = it },
+                onValueChange = {
+                    if ( it.length <= 8 && it.all { char -> char.isDigit() }) {
+                        password.value = it
+                    }
+                },
                 label = { Text(text = "Password") },
                 modifier = Modifier.padding(8.dp),
-                singleLine = true
+                singleLine = true,
+                keyboardOptions = KeyboardOptions(
+                    autoCorrectEnabled = true,
+                    keyboardType = KeyboardType.Number
+                )
             )
 
             Spacer(modifier = Modifier.height(30.dp))
@@ -208,7 +231,13 @@ fun LoginScreen(
                 Text(
                     text = "Sign Up",
                     color = Color(0xFF1976D2),
-                    fontFamily = FontFamily(Font(R.font.times))
+                    fontFamily = FontFamily(Font(R.font.times)),
+                    modifier = Modifier.clickable {
+                        navController.navigate(Routes.SignUpScreenRoute){
+                            popUpTo(Routes.LoginScreenRoute) { inclusive = true } // Clears the back stack
+                            launchSingleTop = true // Prevents duplicate navigation
+                        }
+                    }
                 )
             }
         }

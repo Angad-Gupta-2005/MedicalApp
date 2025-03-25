@@ -114,6 +114,13 @@ class MyViewModel @Inject constructor(private val repo: Repo, private val prefs:
         }
     }
 
+//    Function that clear all data of preferences or logout functionality
+    fun logoutUser(){
+        viewModelScope.launch(Dispatchers.IO) {
+            prefs.clearUser()
+        }
+    }
+
 //    Function that login the user
     fun loginUser(email: String, password: String){
         viewModelScope.launch(Dispatchers.IO) {

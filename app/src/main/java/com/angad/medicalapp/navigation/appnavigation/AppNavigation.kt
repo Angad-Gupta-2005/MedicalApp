@@ -106,7 +106,7 @@ fun AppNavigation(viewModel: MyViewModel = hiltViewModel()) {
 
     //    For Profile screen
         composable<Routes.ProfileRoute> {
-            ProfileScreen()
+            ProfileScreen(userId = userId.value!!, navController = navController)
         }
 
     //   For specific order screen

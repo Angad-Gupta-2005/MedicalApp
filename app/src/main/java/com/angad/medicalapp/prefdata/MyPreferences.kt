@@ -43,7 +43,7 @@ class MyPreferences(private val context: Context) {
     }
 
 //    Function that delete the data from preferences if the user is logout
-    suspend fun clearUserId(){
+    suspend fun clearUser(){
         context.dataStore.edit {
             it.clear()
         }
