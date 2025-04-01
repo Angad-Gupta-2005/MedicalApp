@@ -58,6 +58,14 @@ interface ApiService {
     ): Response<GetSpecificProductResponse>
 
 
+//    Function that fetch specific category product details
+    @FormUrlEncoded
+    @POST("getProductCategories")
+    suspend fun getCategoryProducts(
+        @Field("category") category: String
+    ): Response<GetAllProductsResponse>
+
+
 //    Function that add order details
     @FormUrlEncoded
     @POST("addOrderDetails")

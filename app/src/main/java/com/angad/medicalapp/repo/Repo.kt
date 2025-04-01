@@ -13,7 +13,6 @@ import com.angad.medicalapp.models.SpecificOrderResponse
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import retrofit2.Response
-import retrofit2.http.Field
 import javax.inject.Inject
 
 class Repo @Inject constructor(private val apiBuilder: ApiBuilder) {
@@ -99,6 +98,20 @@ class Repo @Inject constructor(private val apiBuilder: ApiBuilder) {
         }
     }
 
+//    Function that fetch specific product category
+    suspend fun getSpecificProductCategory(category: String): Flow<Results<Response<GetAllProductsResponse>>> = flow {
+        emit(Results.Loading)
+        try {
+            val response = apiBuilder.api.getCategoryProducts(category = category)
+            if (response.isSuccessful){
+                emit(Results.Success(response))
+            } else {
+                emit(Results.Error(response.message()))
+            }
+        } catch (e: Exception){
+            emit(Results.Error(e.message.toString()))
+        }
+    }
 
 //    Function that fetch specific product details
     suspend fun getSpecificProduct(

@@ -13,6 +13,7 @@ import androidx.navigation.toRoute
 import com.angad.medicalapp.navigation.routes.Routes
 import com.angad.medicalapp.screens.AddOrderScreen
 import com.angad.medicalapp.screens.BottomNav
+import com.angad.medicalapp.screens.CategoryScreen
 import com.angad.medicalapp.screens.GetAllProductScreen
 import com.angad.medicalapp.screens.HomeScreen
 import com.angad.medicalapp.screens.LoginScreen
@@ -115,6 +116,11 @@ fun AppNavigation(viewModel: MyViewModel = hiltViewModel()) {
             SpecificOrderScreen(orderId = orderId, viewModel = viewModel)
         }
 
+    //   For category screen
+        composable<Routes.CategoryScreenRoute> {
+            val category = it.arguments?.getString("category")?: ""
+            CategoryScreen(category = category)
+        }
 
     }
 

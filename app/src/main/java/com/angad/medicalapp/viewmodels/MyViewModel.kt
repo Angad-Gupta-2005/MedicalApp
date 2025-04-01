@@ -219,6 +219,26 @@ class MyViewModel @Inject constructor(private val repo: Repo, private val prefs:
         }
     }
 
+//    Function that fetch category products
+    fun getCategoryProducts(category: String){
+        viewModelScope.launch(Dispatchers.IO) {
+            repo.getSpecificProductCategory(category = category).collect{
+                when(it){
+                    is Results.Loading -> {
+                        _getAllProducts.value = GetAllProductState(isLoading = true)
+                    }
+                    is Results.Error -> {
+                        _getAllProducts.value = GetAllProductState(error = it.message, isLoading = false)
+                    }
+
+                    is Results.Success -> {
+                        _getAllProducts.value = GetAllProductState(data = it.data.body(), isLoading = false)
+                    }
+                }
+            }
+        }
+
+    }
 
 //    Function that place order
     fun addOrderDetails(

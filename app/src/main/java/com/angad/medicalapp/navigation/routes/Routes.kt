@@ -41,5 +41,8 @@ sealed class Routes {
     @Serializable
     data class SpecificOrderRoute(val orderId: String)
 
+//    For category screen
+    @Serializable
+    data class CategoryScreenRoute(val category: String)
 
 }

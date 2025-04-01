@@ -1,21 +1,27 @@
 package com.angad.medicalapp.screens
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.AccountCircle
-import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -37,11 +43,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.angad.medicalapp.R
+import com.angad.medicalapp.models.CategoryData
+import com.angad.medicalapp.models.getCategoryList
 import com.angad.medicalapp.navigation.routes.Routes
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(navController: NavController) {
+
+    val scrollState = rememberScrollState()
+    val categoryList = getCategoryList()
 
     Scaffold(
         topBar = {
@@ -83,7 +94,11 @@ fun HomeScreen(navController: NavController) {
     ) { innerPadding ->
 
         Column(
-            modifier = Modifier.background(Color(0xFFE3F2FD)).padding(innerPadding)
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding)
+                .background(Color(0xFFE3F2FD))
+                .verticalScroll(scrollState)
         ) {
 
         //    Banner row
@@ -124,115 +139,10 @@ fun HomeScreen(navController: NavController) {
             }
 
         //    For category list
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(start = 8.dp, end = 8.dp, top = 8.dp)
-            ) {
-            //    First category
-                Column(
-                    modifier = Modifier
-                        .weight(0.25f)
-                        .padding(horizontal = 6.dp)
-                ) {
-                    Card(
-                        colors = CardDefaults.cardColors(containerColor = Color(0xFF90CAF9))
-                    ) {
-                        Image(
-                            painter = painterResource(id = R.drawable.weight),
-                            contentDescription = "Fitness",
-                            alignment = Alignment.Center,
-                            contentScale = ContentScale.Inside,
-                            modifier = Modifier.padding(20.dp)
-                        )
-                    }
-                    Text(
-                        text = "Fitness",
-                        fontSize = 12.sp,
-                        maxLines = 1,
-                        modifier = Modifier.fillMaxWidth(),
-                        textAlign = TextAlign.Center
-                    )
+            LazyRow {
+                items(categoryList) { category ->
+                    CategoryItem(category = category, navController = navController)
                 }
-
-            //    Second category
-                Column(
-                    modifier = Modifier
-                        .weight(0.25f)
-                        .padding(horizontal = 6.dp)
-                ) {
-                    Card(
-                        colors = CardDefaults.cardColors(containerColor = Color(0xFF90CAF9))
-                    ) {
-                        Image(
-                            painter = painterResource(id = R.drawable.personal_care),
-                            contentDescription = "Personal care",
-                            alignment = Alignment.Center,
-                            contentScale = ContentScale.Inside,
-                            modifier = Modifier.padding(20.dp)
-                        )
-                    }
-                    Text(
-                        text = "Personal care",
-                        fontSize = 12.sp,
-                        maxLines = 1,
-                        modifier = Modifier.fillMaxWidth(),
-                        textAlign = TextAlign.Center
-                    )
-                }
-
-            //    Third category
-                Column(
-                    modifier = Modifier
-                        .weight(0.25f)
-                        .padding(horizontal = 6.dp)
-                ) {
-                    Card(
-                        colors = CardDefaults.cardColors(containerColor = Color(0xFF90CAF9))
-                    ) {
-                        Image(
-                            painter = painterResource(id = R.drawable.medicine),
-                            contentDescription = "Familymedicine",
-                            alignment = Alignment.Center,
-                            contentScale = ContentScale.Inside,
-                            modifier = Modifier.padding(20.dp)
-                        )
-                    }
-                    Text(
-                        text = "Familycare",
-                        fontSize = 12.sp,
-                        maxLines = 1,
-                        modifier = Modifier.fillMaxWidth(),
-                        textAlign = TextAlign.Center
-                    )
-                }
-
-            //    Fourth category
-                Column(
-                    modifier = Modifier
-                        .weight(0.25f)
-                        .padding(horizontal = 6.dp)
-                ) {
-                    Card(
-                        colors = CardDefaults.cardColors(containerColor = Color(0xFF90CAF9))
-                    ) {
-                        Image(
-                            painter = painterResource(id = R.drawable.lifestyles),
-                            contentDescription = "Lifestyle",
-                            alignment = Alignment.Center,
-                            contentScale = ContentScale.Inside,
-                            modifier = Modifier.padding(20.dp)
-                        )
-                    }
-                    Text(
-                        text = "Lifestyle",
-                        fontSize = 12.sp,
-                        maxLines = 1,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                }
-
             }
 
         //    Recommended product row
@@ -429,6 +339,45 @@ fun HomeScreen(navController: NavController) {
 
             }
 
+        //    For space in bottom
+            Spacer(modifier = Modifier.height(100.dp))
+
         }
     }
+}
+
+//    For category UI
+@Composable
+fun CategoryItem(category: CategoryData, navController: NavController) {
+    Column(
+        modifier = Modifier
+            .padding(horizontal = 6.dp)
+            .width(95.dp)
+    ) {
+        Card(
+            modifier = Modifier.clickable {
+                navController.navigate(Routes.CategoryScreenRoute(category = category.name))
+            },
+            shape = RoundedCornerShape(12.dp),
+            elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+            colors = CardDefaults.cardColors(containerColor = Color(0xFFEEEEEE))
+        ) {
+            Image(
+                painter = painterResource(category.imageRes),
+                contentDescription = category.name,
+                alignment = Alignment.Center,
+                contentScale = ContentScale.Inside,
+                modifier = Modifier.padding(20.dp)
+            )
+        }
+        Text(
+            text = category.name,
+            fontSize = 14.sp,
+            fontWeight = FontWeight.SemiBold,
+            maxLines = 1,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.fillMaxWidth()
+        )
+    }
+
 }
