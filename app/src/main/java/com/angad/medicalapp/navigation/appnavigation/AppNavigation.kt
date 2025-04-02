@@ -119,7 +119,7 @@ fun AppNavigation(viewModel: MyViewModel = hiltViewModel()) {
     //   For category screen
         composable<Routes.CategoryScreenRoute> {
             val category = it.arguments?.getString("category")?: ""
-            CategoryScreen(category = category)
+            CategoryScreen(category = category, navController = navController)
         }
 
     }
