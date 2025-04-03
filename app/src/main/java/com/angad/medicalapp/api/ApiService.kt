@@ -7,6 +7,7 @@ import com.angad.medicalapp.models.GetSpecificProductResponse
 import com.angad.medicalapp.models.GetSpecificUserResponse
 import com.angad.medicalapp.models.LoginUserResponse
 import com.angad.medicalapp.models.OrderHistoryResponse
+import com.angad.medicalapp.models.RecommendedProductResponse
 import com.angad.medicalapp.models.SpecificOrderResponse
 import retrofit2.Response
 import retrofit2.http.Field
@@ -64,6 +65,14 @@ interface ApiService {
     suspend fun getCategoryProducts(
         @Field("category") category: String
     ): Response<GetAllProductsResponse>
+
+
+//    Function that fetch recommended product for user
+    @FormUrlEncoded
+    @POST("recommendedProduct")
+    suspend fun getRecommendedProducts(
+        @Field("user_id") userId: String
+    ): Response<RecommendedProductResponse>
 
 
 //    Function that add order details

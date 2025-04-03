@@ -9,6 +9,7 @@ import com.angad.medicalapp.models.GetSpecificProductResponse
 import com.angad.medicalapp.models.GetSpecificUserResponse
 import com.angad.medicalapp.models.LoginUserResponse
 import com.angad.medicalapp.models.OrderHistoryResponse
+import com.angad.medicalapp.models.RecommendedProductResponse
 import com.angad.medicalapp.models.SpecificOrderResponse
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -99,7 +100,9 @@ class Repo @Inject constructor(private val apiBuilder: ApiBuilder) {
     }
 
 //    Function that fetch specific product category
-    suspend fun getSpecificProductCategory(category: String): Flow<Results<Response<GetAllProductsResponse>>> = flow {
+    suspend fun getSpecificProductCategory(
+        category: String
+    ): Flow<Results<Response<GetAllProductsResponse>>> = flow {
         emit(Results.Loading)
         try {
             val response = apiBuilder.api.getCategoryProducts(category = category)
@@ -123,6 +126,24 @@ class Repo @Inject constructor(private val apiBuilder: ApiBuilder) {
             if (response.isSuccessful){
                 emit(Results.Success(response))
             } else {
+                emit(Results.Error(response.message()))
+            }
+        } catch (e: Exception){
+            emit(Results.Error(e.message.toString()))
+        }
+    }
+
+
+//    Function that fetch recommended product details
+    suspend fun getRecommendedProduct(
+        userId: String
+    ): Flow<Results<Response<RecommendedProductResponse>>> = flow{
+        emit(Results.Loading)
+        try {
+            val response = apiBuilder.api.getRecommendedProducts(userId)
+            if (response.isSuccessful){
+                emit(Results.Success(response))
+            } else{
                 emit(Results.Error(response.message()))
             }
         } catch (e: Exception){

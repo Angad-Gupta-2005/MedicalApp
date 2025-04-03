@@ -11,6 +11,7 @@ import com.angad.medicalapp.models.GetSpecificProductResponse
 import com.angad.medicalapp.models.GetSpecificUserResponse
 import com.angad.medicalapp.models.LoginUserResponse
 import com.angad.medicalapp.models.OrderHistoryResponse
+import com.angad.medicalapp.models.RecommendedProductResponse
 import com.angad.medicalapp.models.SpecificOrderResponse
 import com.angad.medicalapp.prefdata.MyPreferences
 import com.angad.medicalapp.repo.Repo
@@ -47,6 +48,10 @@ class MyViewModel @Inject constructor(private val repo: Repo, private val prefs:
 //    Mutable state for getSpecificProduct
     private val _getSpecificProduct = MutableStateFlow(GetSpecificProductState())
     val getSpecificProduct = _getSpecificProduct.asStateFlow()
+
+//    Mutable state for getRecommended products
+    private val _getRecommendedProducts = MutableStateFlow(RecommendedProductState())
+    val getRecommendedProducts = _getRecommendedProducts.asStateFlow()
 
 //    Mutable state for get userId from preferences
     private val _userIdByPref = MutableStateFlow<String?>(null)
@@ -240,6 +245,27 @@ class MyViewModel @Inject constructor(private val repo: Repo, private val prefs:
 
     }
 
+//    Function that fetch recommended product details
+    fun getRecommendedProduct(userId: String){
+        viewModelScope.launch(Dispatchers.IO) {
+            repo.getRecommendedProduct(userId).collect{
+                when(it){
+                    is Results.Loading -> {
+                        _getRecommendedProducts.value = RecommendedProductState(isLoading = true)
+                    }
+
+                    is Results.Error -> {
+                        _getRecommendedProducts.value = RecommendedProductState(error = it.message, isLoading = false)
+                    }
+
+                    is Results.Success -> {
+                        _getRecommendedProducts.value = RecommendedProductState(data = it.data.body(), isLoading = false)
+                    }
+                }
+            }
+        }
+    }
+
 //    Function that place order
     fun addOrderDetails(
         products_id: String,
@@ -387,4 +413,10 @@ data class SpecificOrderState(
     val isLoading: Boolean = false,
     val error: String? = null,
     var data: SpecificOrderResponse? = null
+)
+
+data class RecommendedProductState(
+    val isLoading: Boolean = false,
+    val error: String? = null,
+    val data: RecommendedProductResponse? = null
 )

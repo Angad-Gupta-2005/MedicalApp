@@ -95,7 +95,7 @@ fun ContentScreen(modifier: Modifier, navController: NavController, selectedInde
 //        2 -> navController.navigate(Routes.OrderHistoryRoute)
 //        3 -> navController.navigate(Routes.ProfileRoute)
 
-        0 -> HomeScreen(navController = navController)
+        0 -> HomeScreen(userId = userId, navController = navController)
         1 -> GetAllProductScreen(navController = navController)
         2 -> OrderHistoryScreen(userId = userId, navController = navController)
 
