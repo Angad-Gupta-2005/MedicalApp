@@ -4,9 +4,9 @@ import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,10 +15,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
@@ -41,10 +39,8 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.rememberNestedScrollInteropConnection
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -68,8 +64,6 @@ fun HomeScreen(
     viewModel: MyViewModel = hiltViewModel()
 ) {
 
-//    val scrollState = rememberScrollState()
-    val nestedScrollConnection = rememberNestedScrollInteropConnection()
     val categoryList = getCategoryList()
 
     val state = viewModel.getRecommendedProducts.collectAsState()
@@ -119,90 +113,98 @@ fun HomeScreen(
         }
     ) { innerPadding ->
 
-        Column(
+        LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
                 .background(Color(0xFFE3F2FD))
-//                .verticalScroll(scrollState)
-                .nestedScroll(nestedScrollConnection)
         ) {
 
         //    Banner row
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 16.dp, start = 8.dp, end = 8.dp, bottom = 8.dp)
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.medical_banner),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clip(RoundedCornerShape(8.dp)),
-                    alignment = Alignment.Center,
-                    contentScale = ContentScale.FillWidth
-                )
-            }
+           item {
+               Row(
+                   modifier = Modifier
+                       .fillMaxWidth()
+                       .padding(top = 16.dp, start = 8.dp, end = 8.dp, bottom = 8.dp)
+               ) {
+                   Image(
+                       painter = painterResource(id = R.drawable.medical_banner),
+                       contentDescription = null,
+                       modifier = Modifier
+                           .fillMaxWidth()
+                           .clip(RoundedCornerShape(8.dp)),
+                       alignment = Alignment.Center,
+                       contentScale = ContentScale.FillWidth
+                   )
+               }
+           }
 
         //    For category
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(start = 8.dp, end = 8.dp, top = 15.dp, bottom = 10.dp)
-            ) {
+           item {
+               Row(
+                   modifier = Modifier
+                       .fillMaxWidth()
+                       .padding(start = 8.dp, end = 8.dp, top = 15.dp, bottom = 10.dp)
+               ) {
 //                Icon(imageVector = Icons.Default.Menu, contentDescription = "Category")
-                Icon(
-                    painter = painterResource(id = R.drawable.categories),
-                    contentDescription = "Category",
-                    modifier = Modifier.size(24.dp)
-                )
-                Text(
-                    text = "Category",
-                    modifier = Modifier.padding(start = 8.dp),
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 20.sp
-                )
-            }
+                   Icon(
+                       painter = painterResource(id = R.drawable.categories),
+                       contentDescription = "Category",
+                       modifier = Modifier.size(24.dp)
+                   )
+                   Text(
+                       text = "Category",
+                       modifier = Modifier.padding(start = 8.dp),
+                       fontWeight = FontWeight.Bold,
+                       fontSize = 20.sp
+                   )
+               }
+           }
 
         //    For category list
-            LazyRow {
-                items(categoryList) { category ->
-                    CategoryItem(category = category, navController = navController)
+            item {
+                LazyRow {
+                    items(categoryList) { category ->
+                        CategoryItem(category = category, navController = navController)
+                    }
                 }
             }
 
         //    Recommended product row
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(start = 8.dp, end = 8.dp, top = 15.dp, bottom = 10.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
+            item {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 8.dp, vertical = 15.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
 //                Icon(imageVector = Icons.Default.Info, contentDescription = "Recommended")
-                Icon(
-                    painter = painterResource(id = R.drawable.like),
-                    contentDescription = "Recommended",
-                    modifier = Modifier.size(30.dp)
-                )
+                    Icon(
+                        painter = painterResource(id = R.drawable.like),
+                        contentDescription = "Recommended",
+                        modifier = Modifier.size(30.dp)
+                    )
 
-                Text(
-                    text = "Recommended for you",
-                    modifier = Modifier.padding(start = 8.dp),
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 20.sp
-                )
+                    Text(
+                        text = "Recommended for you",
+                        modifier = Modifier.padding(start = 8.dp),
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 20.sp
+                    )
+                }
             }
 
 
         //    For recommended products
             when{
                 state.value.isLoading -> {
-                    Box(
-                        modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        CircularProgressIndicator()
+                    item {
+                        Box(
+                            modifier = Modifier.fillMaxSize(),
+                            contentAlignment = Alignment.BottomCenter
+                        ) {
+                            CircularProgressIndicator()
+                        }
                     }
                 }
 
@@ -213,58 +215,41 @@ fun HomeScreen(
                 state.value.data != null -> {
                     Toast.makeText(context, "Data fetch successfully", Toast.LENGTH_SHORT).show()
                     val data = state.value.data!!
-                //    For recommended product
-                    LazyVerticalGrid(
-                        columns = GridCells.Fixed(3),
-                        contentPadding = PaddingValues(bottom = 80.dp)
-                    ) {
-                        items(data){ product ->
-                            ProductItem(product = product, navController = navController)
+
+                //    For recommended product and display products in a 3-column grid
+                    items(data.chunked(3)){ rowItems ->
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(4.dp),
+                            horizontalArrangement = Arrangement.SpaceEvenly
+                        ) {
+                            rowItems.forEach { product ->
+                                Box(
+                                    modifier = Modifier
+                                        .weight(1f)
+                                        //.padding(4.dp)
+                                ) {
+                                    ProductItem(
+                                        product = product,
+                                        navController = navController
+                                    )
+                                }
+                            }
                         }
                     }
                 }
             }
-
-            
             
         //    For space in bottom
-            Spacer(modifier = Modifier.height(100.dp))
+            item {
+                Spacer(modifier = Modifier.height(100.dp))
+            }
 
         }
     }
 }
 
-@Composable
-fun ProductItem(product: RecommendedProductResponseItem, navController: NavController) {
-    Column(
-        modifier = Modifier.padding(6.dp)
-    ) {
-        Card(
-            modifier = Modifier.clickable {
-                navController.navigate(Routes.AddOrderRoute(productId = product.products_id))
-            },
-            shape = RoundedCornerShape(12.dp),
-            elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-            colors = CardDefaults.cardColors(containerColor = Color(0xFFEEEEEE))
-        ) {
-            Image(
-                painter = painterResource(id = R.drawable.products),
-                contentDescription = "Paracetamol",
-                alignment = Alignment.Center,
-                contentScale = ContentScale.Inside,
-                modifier = Modifier.padding(25.dp)
-            )
-        }
-        Text(
-            text = product.name,
-            fontSize = 15.sp,
-            fontWeight = FontWeight.SemiBold,
-            maxLines = 1,
-            textAlign = TextAlign.Center,
-            modifier = Modifier.fillMaxWidth()
-        )
-    }
-}
 
 //    For category UI
 @Composable
@@ -301,3 +286,40 @@ fun CategoryItem(category: CategoryData, navController: NavController) {
     }
 
 }
+
+//    For recommended product UI
+@Composable
+fun ProductItem(product: RecommendedProductResponseItem, navController: NavController) {
+    Column(
+        modifier = Modifier
+            .padding(6.dp)
+            .width(120.dp)
+    ) {
+        Card(
+            modifier = Modifier.clickable {
+                navController.navigate(Routes.AddOrderRoute(productId = product.products_id))
+            },
+            shape = RoundedCornerShape(12.dp),
+            elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+            colors = CardDefaults.cardColors(containerColor = Color(0xFFEEEEEE))
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.products),
+                contentDescription = "Paracetamol",
+                alignment = Alignment.Center,
+                contentScale = ContentScale.Inside,
+                modifier = Modifier.padding(25.dp)
+            )
+        }
+        Text(
+            text = product.name,
+            fontSize = 15.sp,
+            fontWeight = FontWeight.SemiBold,
+            maxLines = 1,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.fillMaxWidth()
+        )
+    }
+}
+
+
